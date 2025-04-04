@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Fitness Tracker</h1>
+
+        <h2 style="background-color: green;">Stay Healthy, Stay Happy</h2>
+
+
+
+        <h2>Weather Information</h2>
+        <p>
+        <form id="weatherForm">
+            <input type="text" id="input" placeholder="Enter city">
+            <button type="submit">Get Weather</button>
+        </form>
+        </p>
+        <p><strong>Location:</strong> <span id="location">Loading...</span></p>
+        <p><strong>Temperature:</strong> <span id="temperature">--</span>°C</p>
+        <p><strong>Condition:</strong> <span id="condition">--</span></p>
+
+        <div class="tracker">
+            <label>Steps:</label>
+            <input type="number" id="steps" placeholder="Enter steps">
+            <button onclick="saveData()">Save</button>
+        </div>
+
+        <div class="tracker">
+            <label>Exercise:</label>
+            <input type="number" id="exercise" placeholder="Enter Exercise time">
+            <button onclick="saveData()">Save</button>
+        </div>
+
+        <div class="tracker">
+            <label>Calories:</label>
+            <input type="number" id="calories" placeholder="Enter calories burned">
+            <button onclick="saveData()">Save</button>
+        </div>
+
+        <div class="tracker">
+            <label>Water Intake (L):</label>
+            <input type="number" id="water" step="0.1" placeholder="Enter water intake">
+            <button onclick="saveData()">Save</button>
+        </div>
+
+        <h2>Today's Summary</h2>
+        <p><strong>Steps:</strong> <span id="displaySteps">0</span></p>
+        <p><strong>Exercise:</strong> <span id="displayExercise">0</span></p>
+        <p><strong>Calories:</strong> <span id="displayCalories">0</span></p>
+        <p><strong>Water Intake:</strong> <span id="displayWater">0</span> L</p>
+
+
+        <button onclick="clearData()">Reset</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
