@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FreshMart - Food & Groceries</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlGra24qtX-VvxmEB2cnrdCGYvzRawkZiU1w&s') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    main section {
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .product-card {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border-radius: 8px;
+      flex: 1 0 200px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .review {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #ccc;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #28a745;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FreshMart</h1>
+      <nav>
+        <a href="#explore">Explore</a>
+        <a href="#itinerary">Itinerary</a>
+        <a href="#profile">Profile</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="explore">
+        <h2>Explore Food & Groceries</h2>
+        <div class="products">
+          <div class="product-card">Organic Apples</div>
+          <div class="product-card">Whole Grain Bread</div>
+          <div class="product-card">Almond Milk</div>
+          <div class="product-card">Brown Rice</div>
+          <div class="product-card">Greek Yogurt</div>
+        </div>
+      </section>
+
+      <section id="itinerary">
+        <h2>Your Itinerary</h2>
+        <p>Add items to your wishlist or delivery schedule.</p>
+        <ul>
+          <li>Almond Milk - 5 PM Delivery</li>
+          <li>Organic Apples - Morning Slot</li>
+        </ul>
+      </section>
+
+      <section id="profile">
+        <h2>User Profile & Review</h2>
+        <form>
+          <input type="text" placeholder="Your Name" required />
+          <input type="email" placeholder="Your Email" required />
+          <textarea placeholder="Write your review..." required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+        <div class="review">
+          <strong>Jane D:</strong> Amazing quality and fast delivery!
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 FreshMart. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>
+
