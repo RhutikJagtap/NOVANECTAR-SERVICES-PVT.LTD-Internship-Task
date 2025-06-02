@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advanced Meeting Platform</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background-image: url('https://gamma.tatacommunications.com/assets/wp-content/uploads/2022/05/Website-Blog-3-The-Best-Virtual-Meeting-Platforms-and-Software-for-Your-Company.jpg');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(2px);
+    }
+    .container {
+      background: rgba(255,255,255,0.9);
+      max-width: 600px;
+      margin: 3% auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+    h2, h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .hidden { display: none; }
+    .session {
+      background: #f4f4f4;
+      padding: 15px;
+      border-left: 5px solid #007bff;
+      margin: 10px 0;
+      border-radius: 10px;
+      position: relative;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: crimson;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 8px;
+      cursor: pointer;
+    }
+    .countdown {
+      margin-top: 10px;
+      color: green;
+      font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      .container {
+        margin: 10% 5%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="loginBox">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username"/>
+    <input type="password" id="password" placeholder="Password"/>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div class="container hidden" id="dashboard">
+    <h2>Welcome to the Meeting Platform</h2>
+    <form id="meetingForm">
+      <input type="text" id="title" placeholder="Meeting Title" required />
+      <input type="date" id="date" required />
+      <input type="time" id="time" required />
+      <textarea id="attendees" placeholder="Enter attendees (emails)" required></textarea>
+      <button type="submit">Add Session</button>
+    </form>
+
+    <h3>Scheduled Meetings</h3>
+    <div id="sessionList"></div>
+    <button onclick="logout()" style="background:#dc3545; margin-top: 20px;">Logout</button>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if (user === "admin" && pass === "1234") {
+        localStorage.setItem("loggedIn", "true");
+        showDashboard();
+      } else {
+        alert("Invalid credentials. Try admin / 1234");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      location.reload();
+    }
+
+    function showDashboard() {
+      document.getElementById("loginBox").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      displaySessions();
+    }
+
+    document.getElementById("meetingForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const title = document.getElementById("title").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const attendees = document.getElementById("attendees").value;
+
+      const session = {
+        id: Date.now(),
+        title, date, time, attendees
+      };
+
+      const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+      sessions.push(session);
+      localStorage.setItem("sessions", JSON.stringify(sessions));
+      displaySessions();
+      document.getElementById("meetingForm").reset();
+    });
+
+    function displaySessions() {
+      const sessionList = document.getElementById("sessionList");
+      sessionList.innerHTML = "";
+      const sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+
+      sessions.forEach(session => {
+        const jitsiLink = `https://meet.jit.si/${encodeURIComponent(session.title.replace(/\s+/g, ''))}`;
+        const emailLink = `mailto:${session.attendees}?subject=Meeting Invitation: ${session.title}&body=You are invited to a meeting on ${session.date} at ${session.time}. Join here: ${jitsiLink}`;
+
+        const div = document.createElement("div");
+        div.classList.add("session");
+        div.innerHTML = `
+          <strong>${session.title}</strong><br/>
+          📅 ${session.date} ⏰ ${session.time}<br/>
+          👥 ${session.attendees}<br/>
+          <a href="${jitsiLink}" target="_blank"><button style="background:#28a745;margin-top:5px;">Join Meeting</button></a>
+          <a href="${emailLink}"><button style="background:#ffc107;margin-top:5px;">Send Invite</button></a>
+          <button class="delete-btn" onclick="deleteSession(${session.id})">Delete</button>
+          <div class="countdown" id="countdown-${session.id}"></div>
+        `;
+        sessionList.appendChild(div);
+        startCountdown(session);
+      });
+    }
+
+    function deleteSession(id) {
+      let sessions = JSON.parse(localStorage.getItem("sessions") || "[]");
+      sessions = sessions.filter(session => session.id !== id);
+      localStorage.setItem("sessions", JSON.stringify(sessions));
+      displaySessions();
+    }
+
+    function startCountdown(session) {
+      const countdownEl = document.getElementById(`countdown-${session.id}`);
+      const meetingTime = new Date(`${session.date}T${session.time}`);
+      const interval = setInterval(() => {
+        const now = new Date();
+        const diff = meetingTime - now;
+
+        if (diff <= 0) {
+          countdownEl.textContent = "🔔 Meeting is live!";
+          clearInterval(interval);
+        } else {
+          const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const hrs = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          countdownEl.textContent = `⏳ Starts in ${days}d ${hrs}h ${mins}m`;
+        }
+      }, 1000);
+    }
+
+    if (localStorage.getItem("loggedIn") === "true") {
+      showDashboard();
+    }
+  </script>
+</body>
+</html>
